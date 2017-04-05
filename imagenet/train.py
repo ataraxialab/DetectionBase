@@ -24,7 +24,7 @@ model_names = sorted(name for name in models.__dict__
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
-parser.add_argument('--image-size',default=224,tyoe=int, 
+parser.add_argument('--image-size',default=224,type=int, 
                     help='input image size for model')
 parser.add_argument('--arch', '-a', metavar='ARCH', default='darknet19',
                     choices=model_names,
@@ -37,7 +37,7 @@ parser.add_argument('--epochs', default=160, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('-b', '--batch-size', default=256, type=int,
+parser.add_argument('-b', '--batch-size', default=2, type=int,
                     metavar='N', help='mini-batch size (default: 256)')
 parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
                     metavar='LR', help='initial learning rate')
@@ -65,7 +65,7 @@ def main():
     if args.pretrained:
         print("=> using pre-trained model '{}'".format(args.arch))
         #model = models.__dict__[args.arch](pretrained=True)
-        model = darknet.darknet19(pretrained=True, image-size=args.image-size)
+        model = darknet.darknet19(pretrained=True)
     else:
         print("=> creating model '{}'".format(args.arch))
         #model = models.__dict__[args.arch]()
@@ -99,8 +99,8 @@ def main():
                                      std=[0.229, 0.224, 0.225])
 
     train_loader = torch.utils.data.DataLoader(
-        ImageNet(traindir, 0, transforms.Compose([
-            transforms.RandomSizedCrop(args.image-size),
+        ImageNet(args.data, 0, transforms.Compose([
+            transforms.RandomSizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize,
@@ -109,7 +109,7 @@ def main():
         num_workers=args.workers, pin_memory=True)
 
     val_loader = torch.utils.data.DataLoader(
-        ImageNet(valdir, 2, transforms.Compose([
+        ImageNet(args.data, 2, transforms.Compose([
             transforms.Scale(256),
             transforms.CenterCrop(224),
             transforms.ToTensor(),
@@ -161,6 +161,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
     end = time.time()
     for i, (input, target) in enumerate(train_loader):
+        print ('target',target)
         # measure data loading time
         data_time.update(time.time() - end)
 
@@ -170,6 +171,8 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
         # compute output
         output = model(input_var)
+        print output,target_var
+        target_var.expand(output.size())
         loss = criterion(output, target_var)
 
         # measure accuracy and record loss
@@ -268,7 +271,7 @@ class AverageMeter(object):
 
 def adjust_learning_rate(optimizer, epoch):
     """learning rate decay: polynomial, p=4"""
-    lr = torch.pow((1 - epoch / args.epochs), 4)
+    lr = pow((1 - epoch / args.epochs), 4)
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 
