@@ -13,20 +13,18 @@ IMG_EXTENSIONS = [
     '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP',
 ]
 
+_image_config = [('train', 'train.txt'),('test', 'test.txt'), ('val', 'val.txt')]
+
 
 def make_dataset(dir, type):
-    if type == 0:
-        class_file = os.join(dir, 'train.txt')
-    elif type == 1:
-        class_file = os.join(dir, 'test.txt')
-    else:
-        class_file = os.join(dir, 'val.txt')
-
-    with open(class_file, 'r') as f:
+    if len(_image_config) <= type or type < 0:
+        return []
+    d, txt = _image_config[type]
+    with open(os.path.join(dir, txt), 'r') as f:
         ret = []
-        for l in f:
+        for l in f.readlines():
             elem = l.strip().split(' ')
-        ret.append((elem[0].strip(), elem[1].strip()))
+            ret.append((os.path.join(dir, d, elem[0].strip()), int(elem[1].strip())))
     return ret
 
 

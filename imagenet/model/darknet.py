@@ -50,6 +50,7 @@ class DarkNet(nn.Module):
         x = self.features(x)
         x = x.view(x.size(0), 1024, 7, 7)
         x = self.classifier(x)
+        x = x.view(x.size(0),-1)
         return x
 
 
