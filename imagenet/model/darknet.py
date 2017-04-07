@@ -14,7 +14,7 @@ model_urls = {
 
 class DarkNet(nn.Module):
 
-    def __init__(self, num_classes=1000):
+    def __init__(self, image_size=224, num_classes=1000):
         super(DarkNet, self).__init__()
         self.features = nn.Sequential(
             BasicConv2d(3, 32, kernel_size=3, padding=1),
@@ -50,6 +50,7 @@ class DarkNet(nn.Module):
         x = self.features(x)
         x = x.view(x.size(0), 1024, 7, 7)
         x = self.classifier(x)
+        x = x.view(x.size(0),-1)
         return x
 
 
