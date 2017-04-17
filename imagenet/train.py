@@ -172,7 +172,9 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
         # compute output
         output = model(input_var)
-        # print output,target_var
+        print output,target_var
+        target_var.expand(output.size())
+
         loss = criterion(output, target_var)
 
         # measure accuracy and record loss

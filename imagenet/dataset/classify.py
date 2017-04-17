@@ -25,7 +25,7 @@ def make_dataset(dir, type):
         for l in f.readlines():
             elem = l.strip().split(' ')
             ret.append((os.path.join(dir, d, elem[0].strip()), int(elem[1].strip())))
-    return ret
+    return ret[:2]
 
 
 
