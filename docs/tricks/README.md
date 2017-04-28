@@ -13,6 +13,7 @@
 12. stronger data augmentation: 
 (1) W. Liu, D. Anguelov, D. Erhan, C. Szegedy, and S. Reed. SSD: Single shot multibox detector. ECCV, 2016.
 (2) Howard, A.G.: Some improvements on deep convolutional neural network based image classiﬁcation. 2013.
+(3) change illumination: Imagenet classification with deep convolutional neural networks. 2012.
 13. use an image scale of 800 pixels instead of 600 in <Fast R-CNN> / <Deep residual learning for image recognition>: FPN
 14. train with 512 RoIs per image which accelerate convergence, in contrast to 64 RoIs in <Fast R-CNN> / <Deep residual learning for image recognition>: FPN
 15. use 5 scale anchors instead of 4 in <Deep residual learning for image recognition> (adding 32*32): FPN
