@@ -112,6 +112,27 @@ nohup python -m rcnn.tools.train_rcnn --network imagenet                    \
 
 ### 测试
 
+```shell
+#!/usr/bin/env bash
+# 网络： resnet
+# 数据集：ILSVRC 2017 分类的val数据集
+LOG=test_rcnn_imagenet.log
+
+rm -rf ${LOG}
+
+export MXNET_CUDNN_AUTOTUNE_DEFAULT=0
+export PYTHONUNBUFFERED=1
+
+nohup python -m rcnn.tools.test_rcnn --network resnet                       \
+                                  --dataset imagenet_loc_val_2017           \
+                                  --image_set val                           \
+                                  --root_path /disk2/data/imagenet_loc_2017 \
+                                  --dataset_path ILSVRC                     \
+                                  --prefix model/imagenet_loc_2017          \
+                                  --gpu 2                                   \
+                                  >${LOG} 2>&1 &
+```
+
 ## 备注
 
 请注意的数据集定义规则。
